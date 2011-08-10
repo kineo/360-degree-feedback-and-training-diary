@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<XMLDB PATH="mod/threesixty/db" VERSION="20091008" COMMENT="XMLDB file for Moodle mod/threesixty"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:noNamespaceSchemaLocation="../../../lib/xmldb/xmldb.xsd"
+>
+  <TABLES>
+    <TABLE NAME="threesixty" COMMENT="Instances of the 360 Degree Diagnostics and Gap Analysis activity module" NEXT="threesixty_competency">
+      <FIELDS>
+        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="true" ENUM="false" NEXT="course"/>
+        <FIELD NAME="course" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" DEFAULT="0" SEQUENCE="false" ENUM="false" COMMENT="Course threesixty activity belongs to" PREVIOUS="id" NEXT="name"/>
+        <FIELD NAME="name" TYPE="char" LENGTH="255" NOTNULL="true" SEQUENCE="false" ENUM="false" COMMENT="name field for moodle instances" PREVIOUS="course" NEXT="competenciescarried"/>
+        <FIELD NAME="competenciescarried" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" DEFAULT="0" SEQUENCE="false" ENUM="false" PREVIOUS="name" NEXT="requiredrespondents"/>
+        <FIELD NAME="requiredrespondents" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" DEFAULT="0" SEQUENCE="false" ENUM="false" PREVIOUS="competenciescarried" NEXT="timecreated"/>
+        <FIELD NAME="timecreated" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" DEFAULT="0" SEQUENCE="false" ENUM="false" PREVIOUS="requiredrespondents" NEXT="timemodified"/>
+        <FIELD NAME="timemodified" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" DEFAULT="0" SEQUENCE="false" ENUM="false" PREVIOUS="timecreated"/>
+      </FIELDS>
+      <KEYS>
+        <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+      </KEYS>
+      <INDEXES>
+        <INDEX NAME="course" UNIQUE="false" FIELDS="course"/>
+      </INDEXES>
+    </TABLE>
+    <TABLE NAME="threesixty_competency" COMMENT="Competency tied to a threesixty instance" PREVIOUS="threesixty" NEXT="threesixty_skill">
+      <FIELDS>
+        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="true" ENUM="false" NEXT="activityid"/>
+        <FIELD NAME="activityid" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" DEFAULT="0" SEQUENCE="false" ENUM="false" PREVIOUS="id" NEXT="name"/>
+        <FIELD NAME="name" TYPE="text" LENGTH="small" NOTNULL="false" SEQUENCE="false" ENUM="false" PREVIOUS="activityid" NEXT="description"/>
+        <FIELD NAME="description" TYPE="text" LENGTH="medium" NOTNULL="false" SEQUENCE="false" ENUM="false" PREVIOUS="name" NEXT="showfeedback"/>
+        <FIELD NAME="showfeedback" TYPE="int" LENGTH="1" NOTNULL="true" UNSIGNED="true" DEFAULT="0" SEQUENCE="false" ENUM="false" COMMENT="Whether or not to show a feedback form on this competency page" PREVIOUS="description"/>
+      </FIELDS>
+      <KEYS>
+        <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+      </KEYS>
+    </TABLE>
+    <TABLE NAME="threesixty_skill" COMMENT="Skill associated with a given competency" PREVIOUS="threesixty_competency" NEXT="threesixty_analysis">
+      <FIELDS>
+        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="true" ENUM="false" NEXT="competencyid"/>
+        <FIELD NAME="competencyid" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" DEFAULT="0" SEQUENCE="false" ENUM="false" PREVIOUS="id" NEXT="name"/>
+        <FIELD NAME="name" TYPE="text" LENGTH="small" NOTNULL="false" SEQUENCE="false" ENUM="false" PREVIOUS="competencyid" NEXT="description"/>
+        <FIELD NAME="description" TYPE="text" LENGTH="medium" NOTNULL="false" SEQUENCE="false" ENUM="false" PREVIOUS="name"/>
+      </FIELDS>
+      <KEYS>
+        <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+      </KEYS>
+    </TABLE>
+    <TABLE NAME="threesixty_analysis" COMMENT="Group of 360 responses for a particular user and activity instance" PREVIOUS="threesixty_skill" NEXT="threesixty_carried_comp">
+      <FIELDS>
+        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="true" ENUM="false" NEXT="activityid"/>
+        <FIELD NAME="activityid" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" DEFAULT="0" SEQUENCE="false" ENUM="false" PREVIOUS="id" NEXT="userid"/>
+        <FIELD NAME="userid" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" DEFAULT="0" SEQUENCE="false" ENUM="false" PREVIOUS="activityid"/>
+      </FIELDS>
+      <KEYS>
+        <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+      </KEYS>
+    </TABLE>
+    <TABLE NAME="threesixty_carried_comp" COMMENT="Competencies carried over to Training diary" PREVIOUS="threesixty_analysis" NEXT="threesixty_response">
+      <FIELDS>
+        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="true" ENUM="false" NEXT="analysisid"/>
+        <FIELD NAME="analysisid" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" DEFAULT="0" SEQUENCE="false" ENUM="false" PREVIOUS="id" NEXT="competencyid"/>
+        <FIELD NAME="competencyid" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" DEFAULT="0" SEQUENCE="false" ENUM="false" PREVIOUS="analysisid"/>
+      </FIELDS>
+      <KEYS>
+        <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+      </KEYS>
+    </TABLE>
+    <TABLE NAME="threesixty_response" COMMENT="Links a respondent to an analysis" PREVIOUS="threesixty_carried_comp" NEXT="threesixty_respondent">
+      <FIELDS>
+        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="true" ENUM="false" NEXT="analysisid"/>
+        <FIELD NAME="analysisid" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" DEFAULT="0" SEQUENCE="false" ENUM="false" COMMENT="ID of a record in the threesixty_analysis table" PREVIOUS="id" NEXT="respondentid"/>
+        <FIELD NAME="respondentid" TYPE="int" LENGTH="10" NOTNULL="false" UNSIGNED="true" SEQUENCE="false" ENUM="false" COMMENT="ID of a record in the threesixty_respondent table. NULL indicates that the respondent is the user being evaluated." PREVIOUS="analysisid" NEXT="timecompleted"/>
+        <FIELD NAME="timecompleted" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" DEFAULT="0" SEQUENCE="false" ENUM="false" COMMENT="The time the completed response was submitted." PREVIOUS="respondentid"/>
+      </FIELDS>
+      <KEYS>
+        <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+      </KEYS>
+    </TABLE>
+    <TABLE NAME="threesixty_respondent" COMMENT="Details of an external person providing scores against the analysis" PREVIOUS="threesixty_response" NEXT="threesixty_response_skill">
+      <FIELDS>
+        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="true" ENUM="false" NEXT="email"/>
+        <FIELD NAME="email" TYPE="char" LENGTH="255" NOTNULL="false" SEQUENCE="false" ENUM="false" PREVIOUS="id" NEXT="type"/>
+        <FIELD NAME="type" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" DEFAULT="0" SEQUENCE="false" ENUM="false" COMMENT="Based on the nature of the relationship being the person being evaluated and this respondent. Defined at the site level." PREVIOUS="email" NEXT="analysisid"/>
+        <FIELD NAME="analysisid" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" DEFAULT="0" SEQUENCE="false" ENUM="false" COMMENT="ID of the record in the threesixty_analysis table" PREVIOUS="type" NEXT="uniquehash"/>
+        <FIELD NAME="uniquehash" TYPE="char" LENGTH="255" NOTNULL="false" SEQUENCE="false" ENUM="false" COMMENT="Code sent to the respondent by email" PREVIOUS="analysisid"/>
+      </FIELDS>
+      <KEYS>
+        <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+      </KEYS>
+      <INDEXES>
+        <INDEX NAME="uniquehash" UNIQUE="true" FIELDS="uniquehash"/>
+      </INDEXES>
+    </TABLE>
+    <TABLE NAME="threesixty_response_skill" COMMENT="For attaching a score to a skill in a given response." PREVIOUS="threesixty_respondent" NEXT="threesixty_response_comp">
+      <FIELDS>
+        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="true" ENUM="false" NEXT="responseid"/>
+        <FIELD NAME="responseid" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" DEFAULT="0" SEQUENCE="false" ENUM="false" COMMENT="ID of a record in the threesixty_response table." PREVIOUS="id" NEXT="skillid"/>
+        <FIELD NAME="skillid" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" DEFAULT="0" SEQUENCE="false" ENUM="false" COMMENT="ID of a record in the threesixty_skill table." PREVIOUS="responseid" NEXT="score"/>
+        <FIELD NAME="score" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" DEFAULT="0" SEQUENCE="false" ENUM="false" PREVIOUS="skillid"/>
+      </FIELDS>
+      <KEYS>
+        <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+      </KEYS>
+    </TABLE>
+    <TABLE NAME="threesixty_response_comp" COMMENT="For attaching feedback to a competency in a given response." PREVIOUS="threesixty_response_skill">
+      <FIELDS>
+        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="true" ENUM="false" NEXT="responseid"/>
+        <FIELD NAME="responseid" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" DEFAULT="0" SEQUENCE="false" ENUM="false" COMMENT="ID of the record in the threesixty_response table." PREVIOUS="id" NEXT="competencyid"/>
+        <FIELD NAME="competencyid" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" DEFAULT="0" SEQUENCE="false" ENUM="false" COMMENT="ID of a record in the threesixty_competency table." PREVIOUS="responseid" NEXT="feedback"/>
+        <FIELD NAME="feedback" TYPE="text" LENGTH="medium" NOTNULL="false" SEQUENCE="false" ENUM="false" COMMENT="Textual feedback from the respondent" PREVIOUS="competencyid"/>
+      </FIELDS>
+      <KEYS>
+        <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+      </KEYS>
+    </TABLE>
+  </TABLES>
+  <STATEMENTS>
+    <STATEMENT NAME="insert log_display" TYPE="insert" TABLE="log_display" COMMENT="Initial insert of records on table log_display. Each record describes how data will be showed by log reports.">
+      <SENTENCES>
+        <SENTENCE TEXT="(module, action, mtable, field) VALUES ('threesixty', 'add', 'threesixty', 'name')" />
+        <SENTENCE TEXT="(module, action, mtable, field) VALUES ('threesixty', 'update', 'threesixty', 'name')" />
+        <SENTENCE TEXT="(module, action, mtable, field) VALUES ('threesixty', 'view', 'threesixty', 'name')" />
+      </SENTENCES>
+    </STATEMENT>
+  </STATEMENTS>
+</XMLDB>

@@ -1,0 +1,18 @@
+<script type="text/javascript" src="js/swfobject.js"></script>
+
+<script type="text/javascript">
+	var flashvars = {};
+	flashvars.analysisid = <?php echo $analysisid ?>;
+	flashvars.activityid = <?php echo $activityid ?>;
+<?php
+foreach ($filters as $code => $name) {
+	echo "	flashvars.filter_" . $code . "=\"" . $name . "\";\n";
+}
+?>
+	flashvars.scriptURL = "<?php echo $scriptURL ?>";
+	swfobject.embedSWF("spiderweb.swf", "my_chart", "600", "600", "7.0.0", false, flashvars);
+</script>
+
+<center>
+	<div id="my_chart"></div>
+</center>
