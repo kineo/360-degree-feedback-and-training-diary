@@ -134,20 +134,20 @@ class locallib_test extends prefix_changing_test_case {
     function tearDown() {
         global $db,$CFG;
         
-        remove_test_table('mdl_unittest_trdiary_reflog_value', $db);
-        remove_test_table('mdl_unittest_trdiary_reflog_entry', $db);
-        remove_test_table('mdl_unittest_trdiary_reflog_field', $db);
-        remove_test_table('mdl_unittest_trdiary_pdp_value', $db);
-        remove_test_table('mdl_unittest_trdiary_pdp_field', $db);
-        remove_test_table('mdl_unittest_trdiary_pdp_skill', $db);
-        remove_test_table('mdl_unittest_trdiary', $db);
-        remove_test_table('mdl_unittest_threesixty_carried_comp', $db);
-        remove_test_table('mdl_unittest_threesixty_analysis', $db);
-        remove_test_table('mdl_unittest_threesixty_skill', $db);
-        remove_test_table('mdl_unittest_threesixty_competency', $db);
-        remove_test_table('mdl_unittest_threesixty', $db);
-        remove_test_table('mdl_unittest_event', $db);
-        remove_test_table('mdl_unittest_user', $db);
+        remove_test_table($CFG->prefix.'unittest_trdiary_reflog_value', $db);
+        remove_test_table($CFG->prefix.'unittest_trdiary_reflog_entry', $db);
+        remove_test_table($CFG->prefix.'unittest_trdiary_reflog_field', $db);
+        remove_test_table($CFG->prefix.'unittest_trdiary_pdp_value', $db);
+        remove_test_table($CFG->prefix.'unittest_trdiary_pdp_field', $db);
+        remove_test_table($CFG->prefix.'unittest_trdiary_pdp_skill', $db);
+        remove_test_table($CFG->prefix.'unittest_trdiary', $db);
+        remove_test_table($CFG->prefix.'unittest_threesixty_carried_comp', $db);
+        remove_test_table($CFG->prefix.'unittest_threesixty_analysis', $db);
+        remove_test_table($CFG->prefix.'unittest_threesixty_skill', $db);
+        remove_test_table($CFG->prefix.'unittest_threesixty_competency', $db);
+        remove_test_table($CFG->prefix.'unittest_threesixty', $db);
+        remove_test_table($CFG->prefix.'unittest_event', $db);
+        remove_test_table($CFG->prefix.'unittest_user', $db);
         
         parent::tearDown();
     }

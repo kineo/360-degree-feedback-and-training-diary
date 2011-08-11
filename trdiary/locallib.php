@@ -603,7 +603,7 @@ function build_users_table($activityid, $courseid) {
                           AND trdiaryid='$activityid'
                           GROUP BY userid;";
 
-    $reflog_sql = "select userid, COUNT(id) AS entrycount from mdl_trdiary_reflog_entry WHERE userid IN ($user_sql) AND trdiaryid = '$activityid' GROUP BY userid;";
+    $reflog_sql = "select userid, COUNT(id) AS entrycount from {$CFG->prefix}trdiary_reflog_entry WHERE userid IN ($user_sql) AND trdiaryid = '$activityid' GROUP BY userid;";
 
     //$user_info = get_records_sql($user_info_sql);
     $tocomplete = get_records_sql($tocomplete_sql);
